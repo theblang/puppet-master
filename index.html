@@ -1,19 +1,58 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
-  </head>
-  <body>
+
+    <link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./node_modules/typeahead.js-bootstrap-css/typeaheadjs.css" rel="stylesheet">
+</head>
+
+<body>
     <h1>Hello World!</h1>
     <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    We are using Node.js
+    <script>document.write(process.versions.node)</script>, Chromium
+    <script>document.write(process.versions.chrome)</script>, and Electron
+    <script>document.write(process.versions.electron)</script>.
+
+    <div id="bloodhound">
+        <input class="typeahead" type="text" placeholder="Action">
+    </div>
+
+    <!-- See https://stackoverflow.com/a/37480521/1747491 -->
+    <!-- Insert this line above script imports  -->
+    <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+
+    <!-- normal script imports etc  -->
+    <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="./node_modules/typeahead.js/dist/typeahead.jquery.min.js"></script>
+    <script type="text/javascript" src="./node_modules/typeahead.js/dist/typeahead.bundle.min.js"></script>
+
+    <!-- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
 
     <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
+        // You can also require other files to run in this process
+        require('./renderer.js');
+
+        const actions = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            local: ['foo', 'foo2', 'bar', 'baz']
+        });
+
+        $('#bloodhound .typeahead').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+            {
+                name: 'actions',
+                source: actions
+            });
     </script>
-  </body>
+</body>
+
 </html>
