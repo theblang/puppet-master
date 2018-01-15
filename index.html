@@ -21,6 +21,8 @@
         <input class="typeahead" type="text" placeholder="Action">
     </div>
 
+    <button id="run" onclick="puppeteerHelper.run()">Run</button>
+
     <!-- See https://stackoverflow.com/a/37480521/1747491 -->
     <!-- Insert this line above script imports  -->
     <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
@@ -35,12 +37,13 @@
 
     <script>
         // You can also require other files to run in this process
-        require('./renderer.js');
+        const renderer = require('./renderer.js');
+        const puppeteerHelper = require('./puppeteerHelper.js');
 
         const actions = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.whitespace,
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            local: ['foo', 'foo2', 'bar', 'baz']
+            local: puppeteerHelper.getPageProperties()
         });
 
         $('#bloodhound .typeahead').typeahead({
